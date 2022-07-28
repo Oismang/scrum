@@ -1,0 +1,12 @@
+.main-container .nav-item.dropdown a {
+  font-size: 1.3rem;
+  color: black;
+}
+
+.main-container .alert.alert-danger {
+  margin-top: 4rem;
+}
+
+.app-container {
+  margin-top: 3rem;
+}

@@ -1,0 +1,8 @@
+.projectslist-container > .border-bottom {
+  border-bottom-color: var(--primary) !important;
+}
+
+.projectslist-container .project-title a {
+  text-decoration: none;
+  color: inherit;
+}

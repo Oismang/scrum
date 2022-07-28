@@ -1,21 +1,25 @@
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Auth from "./pages/auth/auth";
+import Home from "./pages/home/home";
+import Login from "./pages/login/login";
+import Main from "./pages/main/main";
+import Notfound from "./pages/notfound/notfound";
+import Project from "./pages/project/project";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="app">
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="login" element={<Login />} />
+        <Route path="auth" element={<Auth />} />
+        <Route path="app" element={<Main />}>
+          <Route path=":projectID" element={<Project />} />
+        </Route>
+  
+        <Route path="*" element={<Notfound />} />
+      </Routes>
     </div>
   );
 }

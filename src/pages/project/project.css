@@ -1,0 +1,24 @@
+.project-container {
+  margin-top: 3rem;
+}
+
+.project-container .tab-content {
+  border: 1px solid #ccccc7;
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.project-container .nav.nav-tabs {
+  font-size: 1.3rem;
+  border: none;
+}
+
+.project-container .nav.nav-tabs .nav-item button {
+  border: none;
+  border-radius: 0.25rem;
+  color: black;
+}
+
+.project-container .nav.nav-tabs .nav-item button.active {
+  background-color: var(--primary);
+  color: white;
+}
