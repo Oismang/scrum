@@ -1,4 +1,5 @@
 import { openDB } from "idb";
+import { TASK_STATUSES } from "./task";
 
 export const PROJECT_STORE = "project";
 export const SPRINT_STORE = "sprint";
@@ -8,6 +9,38 @@ export const USER_STORE = "user";
 export let db;
 
 initDB();
+
+export const initialState = {
+  user: {
+    id: 1,
+    email: "",
+    name: "",
+    password: "",
+    projects: [],
+  },
+  project: {
+    id: 1,
+    name: "",
+    backlog: [],
+    sprints: []
+  },
+  task: {
+    id: 1,
+    name: "",
+    description: "",
+    status: TASK_STATUSES.TODO,
+    storypoints: 1,
+    datecreation: new Date(),
+    duedate: new Date()
+  },
+  sprint: {
+    id: 1,
+    name: "",
+    startdate: new Date(),
+    enddate: new Date(),
+    tasks: []
+  },
+};
 
 async function initDB() {
   db = await openDB("scrum", 1, {
@@ -33,7 +66,10 @@ async function initDB() {
 
       // create tasks store
       if (!db.objectStoreNames.contains(TASKS_STORE)) {
-        db.createObjectStore(TASKS_STORE, { keyPath: "id", autoIncrement: true });
+        db.createObjectStore(TASKS_STORE, {
+          keyPath: "id",
+          autoIncrement: true,
+        });
       }
 
       // create user store
