@@ -1,9 +1,9 @@
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
-import { PlusLg } from 'react-bootstrap-icons';
 import { Navigate, Outlet, useParams } from "react-router-dom";
 import Error from "../../components/error/error";
 import Header from "../../components/header/header";
+import NoDataText from "../../components/nodatatext/nodatatext";
 import { addProject, editProjectById, getAllUserProjects } from "../../idb/project";
 import { findUserById, USER_COOKIE } from "../../idb/user";
 import "./main.css";
@@ -36,6 +36,7 @@ function Main() {
       setUser(userObj);
       setProjects(projectObj);
     } catch (error) {
+      console.error("update data MAIN", error);
       setError({ isError: true, message: error.message });
     }
   }
@@ -82,20 +83,14 @@ function Main() {
     }
   };
 
-  const renderHeader = () => {
-    return !projects 
-      ? <p className="lead text-center">
-        У вас ещё нет проектов. <a href="#" onClick={onAddNewProject} className="text-decoration-none">Создать</a> новый.
-      </p>
-      : <button onClick={onAddNewProject} type="button" className="ms-auto d-block btn btn-primary p-2">
-        <PlusLg size={25} /> Добавить
-      </button>
-  }
-
   const renderContet = () => {
     return <div className="app-container">
       <h1 className="display-3 text-center">Мои проекты</h1>
-      {renderHeader()}
+      <NoDataText 
+        dataToCheck={projects} 
+        onAddFuction={onAddNewProject} 
+        text={"проектов"} 
+      />
       <ProjectModal
         isAdd={isAdd}
         showModal={showModal}

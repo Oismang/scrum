@@ -1,14 +1,14 @@
 import { db, PROJECT_STORE, USER_STORE } from "./init";
 
 export async function addProject(user, project) {
-  const projectId = await db.add(PROJECT_STORE, project);
+  const projectId = await (await db).add(PROJECT_STORE, project);
 
   const newUser = {
     ...user,
     projects: [ ...user.projects, projectId ]
   }
 
-  await db.put(USER_STORE, newUser);
+  await (await db).put(USER_STORE, newUser);
 }
 
 export async function getAllUserProjects(user) {
@@ -33,7 +33,7 @@ export async function deleteUserProjectById(projectID, user) {
     projects: newProjects
   }
 
-  await db.put(USER_STORE, newUser);
+  await (await db).put(USER_STORE, newUser);
 }
 
 export async function editProjectById(project, newName) {
@@ -42,17 +42,17 @@ export async function editProjectById(project, newName) {
     name: newName
   }
 
-  await db.put(PROJECT_STORE, newProject);
+  await (await db).put(PROJECT_STORE, newProject);
 }
 
 export async function getAllProjects() {
-  return db.getAll(PROJECT_STORE);
+  return (await db).getAll(PROJECT_STORE);
 }
 
 export async function deleteProjectById(id) {
-  await db.delete(PROJECT_STORE, id);
+  await (await db).delete(PROJECT_STORE, id);
 }
 
 export async function findProjectById(id) {
-  return await db.get(PROJECT_STORE, id);
+  return await (await db).get(PROJECT_STORE, id);
 }

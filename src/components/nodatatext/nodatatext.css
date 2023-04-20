@@ -1,0 +1,10 @@
+.nodatatext-container button {
+  background-color: var(--primary);
+  color: white;
+  border: none;
+}
+
+.nodatatext-container button:hover {
+  background-color: var(--secondary);
+  color: white;
+}

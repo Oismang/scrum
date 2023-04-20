@@ -1,4 +1,5 @@
 import { db, PROJECT_STORE, TASKS_STORE } from "./init";
+import { findSprintById } from "./sprint";
 
 export const TASK_STATUSES = {
   TODO: "TODO",
@@ -7,14 +8,14 @@ export const TASK_STATUSES = {
 }
 
 export async function addTask(task, project) {
-  const taskID = await db.add(TASKS_STORE, task);
+  const taskID = await (await db).add(TASKS_STORE, task);
 
   const newProject = {
     ...project,
     backlog: [ ...project.backlog, taskID ]
   }
 
-  await db.put(PROJECT_STORE, newProject);
+  await (await db).put(PROJECT_STORE, newProject);
 }
 
 export async function getAllProjectsTasks(project) {
@@ -28,12 +29,35 @@ export async function getAllProjectsTasks(project) {
   return projectTasks.length > 0 ? projectTasks : null;
 }
 
+export async function getAllTasksNotInSprint(project) {
+  if (project.backlog.length === 0) {
+    return null;
+  }
+
+  const allTasks = await getAllTasks();
+  const tasksNotInSprint = allTasks.filter((task) => project.backlog.indexOf(task.id) !== -1 && !task.sprint);
+
+  return tasksNotInSprint.length > 0 ? tasksNotInSprint : null;
+}
+
+export async function getAllSprintTasks(id) {
+  const sprint = await findSprintById(id);
+  if (sprint.tasks.length === 0) {
+    return null;
+  }
+
+  const allTasks = await getAllTasks();
+  const sprintTasks = allTasks.filter((task) => sprint.tasks.indexOf(task.id) !== -1);
+
+  return sprintTasks.length > 0 ? sprintTasks : null;
+}
+
 export async function editTaskById(newTask) {
-  await db.put(TASKS_STORE, newTask);
+  await (await db).put(TASKS_STORE, newTask);
 }
 
 export async function deleteTaskById(task, project) {
-  await db.delete(TASKS_STORE, task.id);
+  await (await db).delete(TASKS_STORE, task.id);
 
   let newBacklog = project.backlog;
   newBacklog.splice(newBacklog.indexOf(task.id), 1)
@@ -43,9 +67,13 @@ export async function deleteTaskById(task, project) {
     backlog: newBacklog
   }
 
-  await db.put(PROJECT_STORE, newProject);
+  await (await db).put(PROJECT_STORE, newProject);
 }
 
 export async function getAllTasks() {
-  return db.getAll(TASKS_STORE);
+  return (await db).getAll(TASKS_STORE);
+}
+
+export async function findTaskById(id) {
+  return await (await db).get(TASKS_STORE, id);
 }

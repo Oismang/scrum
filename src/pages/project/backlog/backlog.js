@@ -1,17 +1,18 @@
 import { useEffect, useState } from "react";
-import { PlusLg } from "react-bootstrap-icons";
-import Modal from "react-bootstrap/Modal";
 import { useParams } from "react-router-dom";
+import NoDataText from "../../../components/nodatatext/nodatatext";
 import Task from "../../../components/task/task";
 import { findProjectById } from "../../../idb/project";
 import { addTask, deleteTaskById, editTaskById, getAllProjectsTasks, TASK_STATUSES } from "../../../idb/task";
 import "./backlog.css";
+import TaskModal from "./taskmodal/taskmodal";
 
 const initialValues = {
   name: "",
   description: "",
   storypoints: "",
-  duedate: ""
+  duedate: "",
+  sprint: null
 }
 
 function Backlog({ setError }) {
@@ -29,6 +30,7 @@ function Backlog({ setError }) {
       setProject(projectObj);
       setTasks(tasksObj);
     } catch (error) {
+      console.log("updateData ERROR BACKLOG", error);
       setError({ isError: true, message: error.message });
     }
   }
@@ -67,16 +69,6 @@ function Backlog({ setError }) {
     setShowModal(true);
   }
 
-  const renderHeader = () => {
-    return !tasks 
-      ? <p className="lead text-center">
-        У вас ещё нет тасков. <a href="#" onClick={addNewTask} className="text-decoration-none">Создать</a> новый.
-      </p>
-      : <button onClick={addNewTask} type="button" className="ms-auto d-block btn btn-primary p-2 mb-3">
-        <PlusLg size={25} /> Добавить
-      </button>
-  }
-
   const handleInputChange = (event) => {
     setValues({
       ...values,
@@ -84,94 +76,8 @@ function Backlog({ setError }) {
     });
   }
 
-  const renderModal = () => {
-    return <Modal show={showModal} onHide={() => setShowModal(false)}>
-      <Modal.Header closeButton>
-        <Modal.Title>Создание таска</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <form onSubmit={onSubmit}>
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              Название таска
-            </label>
-            <input
-              value={values.name}
-              onChange={handleInputChange}
-              type="text"
-              className="form-control"
-              id="name"
-              name="name"
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="description" className="form-label">
-              Описание
-            </label>
-            <textarea
-              value={values.description}
-              onChange={handleInputChange}
-              type="text"
-              className="form-control"
-              id="description"
-              name="description"
-              rows="3"
-              required
-            />
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="storypoints" className="form-label">
-              Оценка сложности
-            </label>
-            <input
-              value={values.storypoints}
-              onChange={handleInputChange}
-              type="number"
-              className="form-control"
-              id="storypoints"
-              name="storypoints"
-              aria-describedby="storypointsHelp"
-              max={20}
-              min={1}
-              required
-            />
-            <div id="storypointsHelp" className="form-text">
-              Минимальное значение 1, максимальное 20.
-            </div>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="duedate" className="form-label">
-              Дата дедлайна
-            </label>
-            <input
-              value={values.duedate}
-              onChange={handleInputChange}
-              type="date"
-              className="form-control"
-              id="duedate"
-              name="duedate"
-              min={new Date().toISOString().split("T")[0]}
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="btn btn-primary d-block ms-auto"
-            data-bs-dismiss="toast"
-          >
-            Создать
-          </button>
-        </form>
-      </Modal.Body>
-    </Modal>
-  }
-
   const onEditTask = (task) => {
+    setIsAdd(false);
     setValues({ ...task });
     setShowModal(true);
   }
@@ -200,9 +106,19 @@ function Backlog({ setError }) {
 
   return (
     <div className="backlog-container p-3">
-      {renderHeader()}
+      <NoDataText 
+        dataToCheck={tasks}
+        onAddFuction={addNewTask}
+        text={"тасков"} 
+      />
       {renderTasks()}
-      {renderModal()}
+      <TaskModal 
+        showModal={showModal}
+        setShowModal={setShowModal}
+        onSubmit={onSubmit}
+        values={values}
+        handleInputChange={handleInputChange}
+      />
     </div>
   );
 }

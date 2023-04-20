@@ -13,7 +13,7 @@ export async function addUser(user) {
     throw new Error(USER_EXISTS_ERROR);
   }
 
-  return await db.add(USER_STORE, user);
+  return await (await db).add(USER_STORE, user);
 }
 
 export async function checkUser(user) {
@@ -31,25 +31,25 @@ export async function checkUser(user) {
 }
 
 export async function editUser(user, id) {
-  return await db.put(USER_STORE, user, id);
+  return await (await db).put(USER_STORE, user, id);
 }
 
 export async function getAllUsers() {
-  return await db.getAll(USER_STORE);
+  return await (await db).getAll(USER_STORE);
 }
 
 export async function deleteAllUsers() {
-  await db.clear(USER_STORE);
+  await (await db).clear(USER_STORE);
 }
 
 export async function deleteUserById(id) {
-  await db.delete(USER_STORE, id);
+  await (await db).delete(USER_STORE, id);
 }
 
 export async function findUserById(id) {
-  return await db.get(USER_STORE, id);
+  return await (await db).get(USER_STORE, id);
 }
 
 export async function findUserByName(name) {
-  return await db.getFromIndex(USER_STORE, "nameIndex", name);
+  return await (await db).getFromIndex(USER_STORE, "nameIndex", name);
 }

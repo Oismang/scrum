@@ -1,4 +1,5 @@
 import { PencilFill, Trash } from "react-bootstrap-icons";
+import "./task.css";
 
 function Task({ task, onEdit, onDelete }) {
   return (

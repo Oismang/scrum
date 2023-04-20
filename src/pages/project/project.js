@@ -4,6 +4,7 @@ import Tabs from 'react-bootstrap/Tabs';
 import Error from "../../components/error/error";
 import Backlog from "./backlog/backlog";
 import "./project.css";
+import Sprint from "./sprint/sprint";
 
 function Project() {
   const [error, setError] = useState({
@@ -24,10 +25,10 @@ function Project() {
             <Backlog setError={setError} />
           </Tab>
           <Tab eventKey="sprints" title="Спринты">
-            вапывапывап
+            <Sprint setError={setError} />
           </Tab>
           <Tab eventKey="scrum-desk" title="Скрам доска">
-            ывапыавпывап
+            Скрам доска
           </Tab>
         </Tabs>
       }

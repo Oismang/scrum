@@ -1,0 +1,28 @@
+.sprint-container {
+  color: white;
+}
+
+.sprint-container .card-header {
+  background-color: var(--secondary);
+}
+
+.sprint-container .card-header .toggle {
+  border: 0;
+  background-color: unset;
+  color: white;
+}
+
+.sprint-container .card-body .task .badge,
+.sprint-container .card-header .badge {
+  background-color: var(--primary);
+}
+
+.sprint-container .card-header button.opened {
+  transform: rotate(180deg);
+}
+
+.sprint-container .card-body {
+  background-color: #F8F9FA;
+  text-align: center;
+  color: black;
+}

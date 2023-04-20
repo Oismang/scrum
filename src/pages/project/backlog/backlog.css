@@ -1,9 +1,0 @@
-.backlog-container .card {
-  background-color: white;
-  border: 1px solid var(--secondary);
-}
-
-.backlog-container .card .card-header {
-  background-color: var(--secondary);
-  color: white;
-}
