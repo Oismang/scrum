@@ -7,3 +7,7 @@
   background-color: var(--secondary);
   color: white;
 }
+
+.backlog-container .card .card-body .row {
+  align-items: center;
+}

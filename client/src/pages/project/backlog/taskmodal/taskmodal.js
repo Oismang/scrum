@@ -1,7 +1,12 @@
 import Modal from "react-bootstrap/Modal";
 
-function TaskModal({ showModal, setShowModal, onSubmit, values, handleInputChange }) {
-
+function TaskModal({
+  showModal,
+  setShowModal,
+  onSubmit,
+  values,
+  handleInputChange,
+}) {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
@@ -59,6 +64,25 @@ function TaskModal({ showModal, setShowModal, onSubmit, values, handleInputChang
             <div id="storypointsHelp" className="form-text">
               Минимальное значение 1, максимальное 20.
             </div>
+          </div>
+
+          <div className="mb-3">
+            <label htmlFor="storypoints" className="form-label">
+              Выполняющий задачу
+            </label>
+            <select
+              className="form-select"
+              aria-label="Default select example"
+              defaultValue={""}
+              onChange={handleInputChange}
+              name="assigne"
+              id="assigne"
+            >
+              <option value="1">Жанна Дарк</option>
+              <option value="2">Ваня Лодырин</option>
+              <option value="3">Иван Второй</option>
+              <option value="4">Илья Первый</option>
+            </select>
           </div>
 
           <div className="mb-3">

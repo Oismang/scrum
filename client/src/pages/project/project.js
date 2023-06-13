@@ -5,6 +5,7 @@ import Error from "../../components/error/error";
 import Backlog from "./backlog/backlog";
 import "./project.css";
 import Sprint from "./sprint/sprint";
+import Desk from "./desk/desk";
 
 function Project() {
   const [error, setError] = useState({
@@ -28,7 +29,7 @@ function Project() {
             <Sprint setError={setError} />
           </Tab>
           <Tab eventKey="scrum-desk" title="Скрам доска">
-            Скрам доска
+            <Desk setError={setError} />
           </Tab>
         </Tabs>
       }

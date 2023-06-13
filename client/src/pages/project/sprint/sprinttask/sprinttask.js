@@ -1,5 +1,6 @@
 import { useDrag } from 'react-dnd';
 import "./sprinttask.css";
+import Avatar from 'react-avatar';
 
 export const SPRINT_TASK_TYPE = "SPRINT_TASK_TYPE";
 
@@ -24,7 +25,8 @@ function SprintTask({ task, sprint, onDragEnd }) {
       </div>
       <div className="d-flex align-items-center">
         <span className="badge me-3">{task.duedate}</span>
-        <span className="badge">{task.storypoints}</span>
+        <span className="badge me-3">{task.storypoints}</span>
+        <Avatar name="Админ Олег" round size="25" value="Админ Олег" textSizeRatio="2.5" />
       </div>
     </div>
   );

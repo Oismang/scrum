@@ -3,7 +3,13 @@ import { useParams } from "react-router-dom";
 import NoDataText from "../../../components/nodatatext/nodatatext";
 import Task from "../../../components/task/task";
 import { findProjectById } from "../../../idb/project";
-import { addTask, deleteTaskById, editTaskById, getAllProjectsTasks, TASK_STATUSES } from "../../../idb/task";
+import {
+  addTask,
+  deleteTaskById,
+  editTaskById,
+  getAllProjectsTasks,
+  TASK_STATUSES,
+} from "../../../idb/task";
 import "./backlog.css";
 import TaskModal from "./taskmodal/taskmodal";
 
@@ -12,8 +18,9 @@ const initialValues = {
   description: "",
   storypoints: "",
   duedate: "",
-  sprint: null
-}
+  assigne: "",
+  sprint: null,
+};
 
 function Backlog({ setError }) {
   const { projectID } = useParams();
@@ -33,7 +40,7 @@ function Backlog({ setError }) {
       console.log("updateData ERROR BACKLOG", error);
       setError({ isError: true, message: error.message });
     }
-  }
+  };
 
   useEffect(() => {
     updateData();
@@ -47,9 +54,9 @@ function Backlog({ setError }) {
         const task = {
           ...values,
           status: TASK_STATUSES.TODO,
-          datecreation: new Date()
-        }
-  
+          datecreation: new Date(),
+        };
+
         await addTask(task, project);
       } else {
         await editTaskById(values);
@@ -61,26 +68,26 @@ function Backlog({ setError }) {
     } finally {
       setShowModal(false);
     }
-  }
+  };
 
   const addNewTask = () => {
     setIsAdd(true);
     setValues(initialValues);
     setShowModal(true);
-  }
+  };
 
   const handleInputChange = (event) => {
     setValues({
       ...values,
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   const onEditTask = (task) => {
     setIsAdd(false);
     setValues({ ...task });
     setShowModal(true);
-  }
+  };
 
   const onDeleteTask = async (task) => {
     try {
@@ -89,30 +96,35 @@ function Backlog({ setError }) {
     } catch (error) {
       setError({ isError: true, message: error.message });
     }
-  }
+  };
 
   const renderTasks = () => {
-    return <div className="row row-cols-1 row-cols-md-3 g-4">
-      {tasks && tasks.map((task) => (
-        <Task
-          key={task.id}
-          task={task}
-          onEdit={onEditTask}
-          onDelete={onDeleteTask}
-         />
-      ))}
-    </div>
-  }
+    return (
+      <div className="row row-cols-1 row-cols-md-3 g-4">
+        {tasks &&
+          tasks.map((task) => (
+            <div className="col">
+              <Task
+                key={task.id}
+                task={task}
+                onEdit={onEditTask}
+                onDelete={onDeleteTask}
+              />
+            </div>
+          ))}
+      </div>
+    );
+  };
 
   return (
     <div className="backlog-container p-3">
-      <NoDataText 
+      <NoDataText
         dataToCheck={tasks}
         onAddFuction={addNewTask}
-        text={"тасков"} 
+        text={"тасков"}
       />
       {renderTasks()}
-      <TaskModal 
+      <TaskModal
         showModal={showModal}
         setShowModal={setShowModal}
         onSubmit={onSubmit}
