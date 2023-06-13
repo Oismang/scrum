@@ -5,48 +5,55 @@ import Error from "../../components/error/error";
 import Header from "../../components/header/header";
 import NoDataText from "../../components/nodatatext/nodatatext";
 import { addProject, editProjectById, getAllUserProjects } from "../../idb/project";
-import { findUserById, USER_COOKIE } from "../../idb/user";
 import "./main.css";
 import ProjectModal from "./projectmodal/projectmodal";
 import ProjectsList from "./projectslist/projectslist";
+import { useCreteProjectMutation, useGetAllProjectsQuery } from "../../services/project";
+import { USER_TOKEN_COOKIE } from "../../services/user";
+import { parseJwtToken } from "../../utils/functions";
 
 const initialValues = {
   name: ""
 }
 
 function Main() {
-  const userID = Cookies.get(USER_COOKIE);
+  const { data: projects, isError: isProjectError, error: projectError, } = useGetAllProjectsQuery();
+  const [ createProject, { isError: isCreateProjectError, error: createProjectError } ] = useCreteProjectMutation();
+  const user = parseJwtToken(Cookies.get(USER_TOKEN_COOKIE));
+  const { projectID } = useParams();
   const [error, setError] = useState({
     isError: false,
     message: ""
   });
-  const [user, setUser] = useState(null);
-  const [projects, setProjects] = useState(null);
+  // const [user, setUser] = useState(null);
+  // const [projects, setProjects] = useState(null);
 
   const [values, setValues] = useState(initialValues);
   const [showModal, setShowModal] = useState(false);
   const [isAdd, setIsAdd] = useState(false);
 
-  const { projectID } = useParams();
-
-  const updateData = async () => {
-    try {
-      const userObj = await findUserById(+userID);
-      const projectObj = await getAllUserProjects(userObj);
-      setUser(userObj);
-      setProjects(projectObj);
-    } catch (error) {
-      console.error("update data MAIN", error);
-      setError({ isError: true, message: error.message });
-    }
-  }
 
   useEffect(() => {
-    updateData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+    console.log("IN SER ERROR", projectError);
+    setError({
+      isError: isProjectError,
+      message: projectError?.data?.msg || projectError?.error
+    });
+  }, [isProjectError]);
+
+  // const updateData = async () => {
+  //   try {
+  //     const userObj = await findUserById(+userID);
+  //     const projectObj = await getAllUserProjects(userObj);
+  //     setUser(userObj);
+  //     setProjects(projectObj);
+  //   } catch (error) {
+  //     console.error("update data MAIN", error);
+  //     setError({ isError: true, message: error.message });
+  //   }
+  // }
 
   const onAddNewProject = () => {
-    setValues(initialValues);
     setIsAdd(true);
     setShowModal(true);
   }
@@ -61,26 +68,30 @@ function Main() {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    try {
-      if (isAdd) {
-        const project = {
-          name: values.name,
-          backlog: [],
-          sprints: []
-        }
-        await addProject(user, project);
-        setIsAdd(false);
-      } else {
-        await editProjectById(values.project, values.name);
-      }
-
-      setValues(initialValues);
-      updateData();
-    } catch (error) {
-      setError({ isError: true, message: error.message });
-    } finally {
-      setShowModal(false);
+    const project = {
+      name: values.name
     }
+
+    // try {
+    //   if (isAdd) {
+    //     const project = {
+    //       name: values.name,
+    //       backlog: [],
+    //       sprints: []
+    //     }
+    //     await addProject(user, project);
+    //     setIsAdd(false);
+    //   } else {
+    //     await editProjectById(values.project, values.name);
+    //   }
+
+    //   setValues(initialValues);
+    //   updateData();
+    // } catch (error) {
+    //   setError({ isError: true, message: error.message });
+    // } finally {
+    //   setShowModal(false);
+    // }
   };
 
   const renderContet = () => {
@@ -100,23 +111,22 @@ function Main() {
         onSubmit={onSubmit}
       />
       <ProjectsList
-        updateData={updateData}
+        // updateData={updateData}
         user={user}
         projects={projects}
-        setError={setError}
+        // setError={setError}
         setShowModal={setShowModal}
-        setValues={setValues}
+        // setValues={setValues}
       />
     </div>
   }
 
-  if (!userID) {
-    return <Navigate to="/" replace={true} />;
-  }
-
   return (
     <div className="main-container container">
-      {error.isError && <Error message={error.message} />}
+      {/* {isSuccess && data.projects.map((project) => {
+        return <p>{project.name}</p>
+      })} */}
+      {error.isError && <Error message={error?.message} />}
       {!error.isError && user && <Header user={user} />}
       {projectID ? !error.isError && <Outlet /> : !error.isError && user && renderContet()}
     </div>

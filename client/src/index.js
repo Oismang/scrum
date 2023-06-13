@@ -5,15 +5,19 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import { store } from './store';
+import { Provider } from 'react-redux';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <DndProvider backend={HTML5Backend}>
-        <App />
-      </DndProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <DndProvider backend={HTML5Backend}>
+          <App />
+        </DndProvider>
+      </BrowserRouter>
+    </Provider>
   </React.StrictMode>
 );

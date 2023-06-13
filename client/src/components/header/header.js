@@ -1,17 +1,17 @@
 import Cookies from "js-cookie";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
+import Navbar from "react-bootstrap/Navbar";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/logo/logo";
-import { USER_COOKIE } from "../../idb/user";
+import { USER_TOKEN_COOKIE } from "../../services/user";
 
 function Header({ user }) {
   const navigate = useNavigate();
 
   const onLogout = () => {
-    Cookies.remove(USER_COOKIE);
+    Cookies.remove(USER_TOKEN_COOKIE);
     navigate("/");
   };
 

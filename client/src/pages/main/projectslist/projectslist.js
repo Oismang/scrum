@@ -21,7 +21,7 @@ function ProjectsList({ updateData, setShowModal, setValues, user, projects, set
 
   const renderProjects = () => {
     return projects.map((project) => (
-      <div className="row border-bottom p-3 mb-3 align-items-center" key={project.id}>
+      <div className="row border-bottom p-3 mb-3 align-items-center" key={project._id}>
         <div className="col-3 project-title">
           <Link to={`${project.id}`}>
             <h1 className="display-6">{project.name}</h1>

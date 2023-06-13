@@ -1,47 +1,35 @@
-import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/logo/logo";
-import { addUser, USER_COOKIE, USER_EXISTS_ERROR } from "../../idb/user";
+import { useRegisterMutation } from "../../services/user";
 import "./auth.css";
 
 function Auth() {
+  const [registerUser, { error, isError, reset }] = useRegisterMutation();
   const navigate = useNavigate();
   const [values, setValues] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [isNameError, setIsNameError] = useState(false);
-  const [isError, setIsError] = useState(false);
 
-  const onSubmit = async (event) => {
+  const onSubmit = (event) => {
     event.preventDefault();
-
-    try {
-      const user = {
-        name: values.name,
-        email: values.email,
-        password: values.password,
-        projects: []
-      };
-      const userID = await addUser(user);
-      Cookies.set(USER_COOKIE, userID, {
-        expires: 1 / 12,
-      });
-      navigate("/app");
-    } catch (error) {
-      if (error.message === USER_EXISTS_ERROR) {
-        setIsNameError(true);
-      } else {
-        setIsError(true);
-      }
-    }
+    const user = {
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+    registerUser(user)
+      .unwrap()
+      .then(() => {
+        navigate("/app");
+      })
+      .catch(() => {});
   };
 
   const handleInputChange = (event) => {
-    setIsNameError(false);
-    setIsError(false);
+    reset();
     setValues({
       ...values,
       [event.target.name]: event.target.value,
@@ -58,8 +46,15 @@ function Auth() {
           <Logo width={267} height={60} />
         </div>
 
-        <div className={isError ? "alert alert-danger" : "alert alert-danger visually-hidden"} role="alert">
-          Произошла ошибка! Попробуйте ввести другие данные.
+        <div
+          className={
+            isError
+              ? "alert alert-danger"
+              : "alert alert-danger visually-hidden"
+          }
+          role="alert"
+        >
+          {error?.data.msg}
         </div>
 
         <div className="mb-3">
@@ -70,16 +65,12 @@ function Auth() {
             value={values.name}
             onChange={handleInputChange}
             type="text"
-            className={isNameError ? "form-control is-invalid" : "form-control"}
+            className="form-control"
             id="name"
             name="name"
             aria-describedby="nameHelp"
             required
-            minLength={4}
           />
-          <div className="invalid-feedback">
-            Данное имя пользователя уже занято! Введите другое.
-          </div>
           <div id="nameHelp" className="form-text">
             Будет использоватся для входа в аккаунт
           </div>
