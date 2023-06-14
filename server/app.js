@@ -12,6 +12,9 @@ import { authRouter } from "./routes/auth.js";
 import { projectRouter } from "./routes/project.js";
 import { authMiddleware } from "./middleware/authentication.js";
 import morgan from "morgan";
+import { userRouter } from "./routes/user.js";
+import { sprintRouter } from "./routes/sprint.js";
+import { taskRouter } from "./routes/task.js";
 
 dotenv.config();
 
@@ -38,7 +41,11 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/user', authMiddleware, userRouter);
 app.use('/api/v1/project', authMiddleware, projectRouter);
+app.use('/api/v1/sprint', authMiddleware, sprintRouter);
+app.use('/api/v1/task', authMiddleware, taskRouter);
+
 
 // NOT FOUND AND ERROR MIDDLEWARES
 app.use(notFoundMiddleware);

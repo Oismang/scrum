@@ -24,3 +24,13 @@ export const createProject = async (req, res) => {
   const project = await Project.create({ ...req.body });
   res.status(StatusCodes.CREATED).json({ project });
 };
+
+export const updateProject = async (req, res) => {
+  const project = await Project.create({ ...req.body });
+  res.status(StatusCodes.CREATED).json({ project });
+};
+
+export const deleteProject = async (req, res) => {
+  const project = await Project.create({ ...req.body });
+  res.status(StatusCodes.CREATED).json({ project });
+};
