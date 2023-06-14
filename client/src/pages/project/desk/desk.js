@@ -28,21 +28,21 @@ function Desk({ setError }) {
 
   return (
     <div className="desk-container p-3">
-      <div className="mb-3 col-4">
-        <label htmlFor="storypoints" className="form-label lead">
-          Выберите спринт
+
+      <div className="mb-3 col-5">
+        <label htmlFor="storypoints" className="form-label lead mb-3">
+          Для отображения скрам доски выберите спринт
         </label>
         <select
           className="form-select"
           aria-label="Default select example"
-          defaultValue={""}
           onChange={() => {}}
           name="assigne"
           id="assigne"
         >
-          <option value="1">Спринт 1</option>
-          <option value="2">Спринт 2</option>
-          <option value="3">Спринт 3</option>
+          <option disabled selected value> -- Выберите спринт -- </option>
+          <option value="1">Спринт 17.06 - 25.06</option>
+          <option value="2">Спринт 26.06 - 12.07</option>
         </select>
       </div>
 
@@ -62,20 +62,20 @@ function Desk({ setError }) {
               })}
           </div>
           <div className="col">
-            {tasks &&
+            {/* {tasks &&
               tasks.map((task) => {
-                if (task.status === TASK_STATUSES.DOING) {
+                if (task.status === TASK_STATUSES.TODO) {
                   return <Task key={task.id} task={task} />;
                 }
-              })}
+              })} */}
           </div>
           <div className="col">
-            {tasks &&
+            {/* {tasks &&
               tasks.map((task) => {
-                if (task.status === TASK_STATUSES.DONE) {
+                if (task.status === TASK_STATUSES.TODO) {
                   return <Task key={task.id} task={task} />;
                 }
-              })}
+              })} */}
           </div>
         </div>
       </div>

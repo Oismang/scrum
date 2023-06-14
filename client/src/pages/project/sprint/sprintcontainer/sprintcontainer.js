@@ -67,7 +67,7 @@ function SprintContainer({ index, sprint, onSprintEdit, onSprintDelete }) {
             <div className="d-flex align-items-center">
               <CustomToggle eventKey={index} />
               <h4 className="me-3">{sprint.name}</h4>
-              <span className="badge me-3">{tasks?.length || 0} тасков</span>
+              <span className="badge me-3">{tasks?.length || 0} задач</span>
               <span className="badge me-3">{sprint?.startdate}</span>
               <span className="badge">{sprint?.enddate}</span>
             </div>
@@ -84,7 +84,7 @@ function SprintContainer({ index, sprint, onSprintEdit, onSprintDelete }) {
             <div ref={drop} className="card-body">
               {tasks 
                 ? renderTasks()
-                : <p className="lead">В спринте ещё нету тасков. Перенесите таск из бэклога что бы добавить</p>
+                : <p className="lead">В спринте ещё нет задач. Перенесите задачу из бэклога чтобы добавить</p>
               }
             </div>
           </Accordion.Collapse>

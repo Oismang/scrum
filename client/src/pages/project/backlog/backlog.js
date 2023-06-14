@@ -17,7 +17,6 @@ const initialValues = {
   name: "",
   description: "",
   storypoints: "",
-  duedate: "",
   assigne: "",
   sprint: null,
 };
@@ -121,7 +120,7 @@ function Backlog({ setError }) {
       <NoDataText
         dataToCheck={tasks}
         onAddFuction={addNewTask}
-        text={"тасков"}
+        text={"задач"}
       />
       {renderTasks()}
       <TaskModal

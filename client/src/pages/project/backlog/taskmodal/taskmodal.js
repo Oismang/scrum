@@ -10,13 +10,13 @@ function TaskModal({
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Создание таска</Modal.Title>
+        <Modal.Title>Создание задачи</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={onSubmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
-              Название таска
+              Название задачи
             </label>
             <input
               value={values.name}
@@ -57,12 +57,12 @@ function TaskModal({
               id="storypoints"
               name="storypoints"
               aria-describedby="storypointsHelp"
-              max={20}
+              max={10}
               min={1}
               required
             />
             <div id="storypointsHelp" className="form-text">
-              Минимальное значение 1, максимальное 20.
+              Минимальное значение 1, максимальное 10.
             </div>
           </div>
 
@@ -73,32 +73,16 @@ function TaskModal({
             <select
               className="form-select"
               aria-label="Default select example"
-              defaultValue={""}
               onChange={handleInputChange}
               name="assigne"
               id="assigne"
             >
-              <option value="1">Жанна Дарк</option>
-              <option value="2">Ваня Лодырин</option>
-              <option value="3">Иван Второй</option>
-              <option value="4">Илья Первый</option>
+              <option disabled selected value> -- Выберите пользователя -- </option>
+              <option value="Жанна Дарк">Жанна Дарк</option>
+              <option value="Ваня Лодырин">Ваня Лодырин</option>
+              <option value="Иван Второй">Иван Второй</option>
+              <option value="Илья Первый">Илья Первый</option>
             </select>
-          </div>
-
-          <div className="mb-3">
-            <label htmlFor="duedate" className="form-label">
-              Дата дедлайна
-            </label>
-            <input
-              value={values.duedate}
-              onChange={handleInputChange}
-              type="date"
-              className="form-control"
-              id="duedate"
-              name="duedate"
-              min={new Date().toISOString().split("T")[0]}
-              required
-            />
           </div>
 
           <button

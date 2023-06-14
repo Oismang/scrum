@@ -63,14 +63,14 @@ function BacklogContainer({ project }) {
             <div className="d-flex align-items-center">
               <CustomToggle eventKey={"0"} />
               <h4 className="me-3">Бэклог</h4>
-              <span className="badge me-3">{tasks?.length || 0} тасков</span>
+              <span className="badge me-3">{tasks?.length || 0} задач</span>
             </div>
           </div>
           <Accordion.Collapse eventKey={"0"}>
             <div ref={drop} className="card-body">
               {tasks 
                 ? renderTasks()
-                : <p className="lead">В бэклоге нету тасков.</p>
+                : <p className="lead">В бэклоге нет задач.</p>
               }
             </div>
           </Accordion.Collapse>

@@ -4,6 +4,7 @@
 
 .desk-container > .container > .row > .col {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
 }
 

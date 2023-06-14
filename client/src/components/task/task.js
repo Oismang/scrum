@@ -94,19 +94,6 @@ function Task({ task, onEdit, onDelete }) {
             </p>
           </div>
         </div>
-
-        <div className="row">
-          <div className="col-6">
-            <p className="card-text">Дата дедлайна</p>
-          </div>
-          <div className="col-auto">
-            <p className="card-text">
-              <span className="badge bg-secondary">
-                {new Date(task.duedate).toLocaleDateString()}
-              </span>
-            </p>
-          </div>
-        </div>
       </div>
       <div className="card-footer">
         <p className="card-text">

@@ -26,7 +26,7 @@ function SprintTask({ task, sprint, onDragEnd }) {
       <div className="d-flex align-items-center">
         <span className="badge me-3">{task.duedate}</span>
         <span className="badge me-3">{task.storypoints}</span>
-        <Avatar name="Админ Олег" round size="25" value="Админ Олег" textSizeRatio="2.5" />
+        <Avatar name="Жанна Дарк" round size="25" textSizeRatio="2.5" />
       </div>
     </div>
   );

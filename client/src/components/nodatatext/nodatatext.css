@@ -8,3 +8,7 @@
   background-color: var(--secondary);
   color: white;
 }
+
+.nodatatext-container .lead {
+  color: black;
+}
