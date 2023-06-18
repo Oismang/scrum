@@ -43,7 +43,7 @@ function BacklogContainer({ tasks, setError }) {
               {tasks.length > 0 ? (
                 renderTasks()
               ) : (
-                <p className="lead">В бэклоге нету задач.</p>
+                <p className="lead">В бэклоге нет задач.</p>
               )}
             </div>
           </Accordion.Collapse>
