@@ -1,10 +1,9 @@
 import express from "express";
 import {
-  getAllSprints,
-  createSprint,
   deleteSprint,
+  getAllSprints,
   getSingleSprint,
-  updateSprint,
+  updateSprint
 } from "../controllers/sprint.js";
 
 const router = express.Router();
@@ -12,7 +11,6 @@ const router = express.Router();
 router
   .route("/")
   .get(getAllSprints)
-  .post(createSprint);
 router
   .route("/:id")
   .get(getSingleSprint)

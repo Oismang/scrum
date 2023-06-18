@@ -2,8 +2,8 @@ import { useState } from "react";
 import { CaretDownFill } from "react-bootstrap-icons";
 import { useAccordionButton } from "react-bootstrap/AccordionButton";
 
-function CustomToggle({ eventKey }) {
-  const [isOpen, setIsOpen] = useState(false);
+function CustomToggle({ eventKey, isOpened }) {
+  const [isOpen, setIsOpen] = useState(isOpened || false);
   const decoratedOnClick = useAccordionButton(eventKey, () => setIsOpen(!isOpen));
 
   return (

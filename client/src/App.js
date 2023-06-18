@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router-dom";
-import "./App.css";
 import Auth from "./pages/auth/auth";
 import Home from "./pages/home/home";
 import Login from "./pages/login/login";
@@ -17,7 +16,7 @@ function App() {
         <Route path="auth" element={<Auth />} />
         <Route element={<ProtectedRoutes />}>
           <Route path="app" element={<Main />}>
-            <Route path=":projectID" element={<Project />} />
+            <Route path=":projectId" element={<Project />} />
           </Route>
         </Route>
 

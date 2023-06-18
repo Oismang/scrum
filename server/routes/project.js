@@ -6,6 +6,8 @@ import {
   getSingleProject,
   updateProject,
 } from "../controllers/project.js";
+import { createProjectTask, getAllProjectTasks } from "../controllers/task.js";
+import { createProjectSprint, getAllProjectSprints } from "../controllers/sprint.js";
 
 const router = express.Router();
 
@@ -18,5 +20,11 @@ router
   .get(getSingleProject)
   .patch(updateProject)
   .delete(deleteProject);
+router.route("/:id/task")
+  .get(getAllProjectTasks)
+  .post(createProjectTask);
+router.route("/:id/sprint")
+  .get(getAllProjectSprints)
+  .post(createProjectSprint);
 
 export const projectRouter = router;

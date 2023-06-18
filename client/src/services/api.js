@@ -1,10 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import Cookies from "js-cookie";
-import { USER_TOKEN_COOKIE } from "./user";
+import { USER_TOKEN_COOKIE } from "./auth";
 
 export const apiTags = {
-  USER: "User",
-  PROJECT: "Project"
+  PROJECT: "Project",
+  TASK: "Task",
+  SPRINT: "Sprint"
 }
 
 const baseQuery = fetchBaseQuery({

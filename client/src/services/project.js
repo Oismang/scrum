@@ -19,7 +19,36 @@ export const projectApi = api.injectEndpoints({
       }),
       invalidatesTags: [{ type: apiTags.PROJECT, id: "LIST" }],
     }),
+
+    updateProject: build.mutation({
+      query(data) {
+        const { projectId, project } = data;
+        return {
+          url: `/project/${projectId}`,
+          method: "PATCH",
+          body: project,
+        };
+      },
+      invalidatesTags: (projects, error, arg) => [
+        { type: apiTags.PROJECT, id: arg?.data?.projectId },
+      ],
+    }),
+
+    deleteProject: build.mutation({
+      query: (projectId) => ({
+        url: `/project/${projectId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (projects, error, arg) => [
+        { type: apiTags.PROJECT, id: arg?.data?.projectId },
+      ],
+    }),
   }),
 });
 
-export const { useGetAllProjectsQuery, useCreteProjectMutation } = projectApi;
+export const {
+  useGetAllProjectsQuery,
+  useCreteProjectMutation,
+  useUpdateProjectMutation,
+  useDeleteProjectMutation,
+} = projectApi;

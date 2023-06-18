@@ -1,11 +1,11 @@
 import Modal from "react-bootstrap/Modal";
 
-function SprintModal({ showModal, setShowModal, onSubmit, values, handleInputChange, isSprintError }) {
+function SprintModal({ isAddSprint, showModal, setShowModal, onSubmit, values, handleInputChange, isSprintError }) {
 
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Создание спринта</Modal.Title>
+        <Modal.Title>{isAddSprint ? "Создание" : "Изменение"} спринта</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={onSubmit}>
@@ -30,32 +30,32 @@ function SprintModal({ showModal, setShowModal, onSubmit, values, handleInputCha
 
           <div className="row">
             <div className="mb-3 col-6">
-              <label htmlFor="startdate" className="form-label">
+              <label htmlFor="startDate" className="form-label">
                 Дата начала
               </label>
               <input
-                value={values.startdate}
+                value={values.startDate}
                 onChange={handleInputChange}
                 type="date"
                 className="form-control"
-                id="startdate"
-                name="startdate"
+                id="startDate"
+                name="startDate"
                 min={new Date().toISOString().split("T")[0]}
                 required
               />
             </div>
 
             <div className="mb-3 col-6">
-              <label htmlFor="enddate" className="form-label">
+              <label htmlFor="endDate" className="form-label">
                 Дата окончания
               </label>
               <input
-                value={values.enddate}
+                value={values.endDate}
                 onChange={handleInputChange}
                 type="date"
                 className="form-control"
-                id="enddate"
-                name="enddate"
+                id="endDate"
+                name="endDate"
                 min={new Date().toISOString().split("T")[0]}
                 required
               />
@@ -67,7 +67,7 @@ function SprintModal({ showModal, setShowModal, onSubmit, values, handleInputCha
             className="btn btn-primary d-block ms-auto"
             data-bs-dismiss="toast"
           >
-            Создать
+            {isAddSprint ? "Создать" : "Изменить"}
           </button>
         </form>
       </Modal.Body>

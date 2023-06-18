@@ -1,17 +1,24 @@
 import Modal from "react-bootstrap/Modal";
 
-function TaskModal({ showModal, setShowModal, onSubmit, values, handleInputChange }) {
-
+function TaskModal({
+  isAdd,
+  showModal,
+  setShowModal,
+  onSubmit,
+  values,
+  handleInputChange,
+  users,
+}) {
   return (
     <Modal show={showModal} onHide={() => setShowModal(false)}>
       <Modal.Header closeButton>
-        <Modal.Title>Создание таска</Modal.Title>
+        <Modal.Title>{isAdd ? "Создание задачи" : "Изменение задачи"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         <form onSubmit={onSubmit}>
           <div className="mb-3">
             <label htmlFor="name" className="form-label">
-              Название таска
+              Название задачи
             </label>
             <input
               value={values.name}
@@ -20,6 +27,7 @@ function TaskModal({ showModal, setShowModal, onSubmit, values, handleInputChang
               className="form-control"
               id="name"
               name="name"
+              minLength={3}
               required
             />
           </div>
@@ -52,29 +60,36 @@ function TaskModal({ showModal, setShowModal, onSubmit, values, handleInputChang
               id="storypoints"
               name="storypoints"
               aria-describedby="storypointsHelp"
-              max={20}
+              max={10}
               min={1}
               required
             />
             <div id="storypointsHelp" className="form-text">
-              Минимальное значение 1, максимальное 20.
+              Минимальное значение 1, максимальное 10.
             </div>
           </div>
 
           <div className="mb-3">
-            <label htmlFor="duedate" className="form-label">
-              Дата дедлайна
+            <label htmlFor="storypoints" className="form-label">
+              Выполняющий задачу
             </label>
-            <input
-              value={values.duedate}
+            <select
+              defaultValue={"default"}
+              className="form-select"
               onChange={handleInputChange}
-              type="date"
-              className="form-control"
-              id="duedate"
-              name="duedate"
-              min={new Date().toISOString().split("T")[0]}
-              required
-            />
+              name="assigne"
+              id="assigne"
+            >
+              <option disabled value={"default"}>
+                -- Выберите пользователя --
+              </option>
+              {users &&
+                users.map((user) => (
+                  <option key={user._id} value={user._id}>
+                    {user.name}
+                  </option>
+                ))}
+            </select>
           </div>
 
           <button

@@ -1,63 +1,44 @@
-import { useEffect, useState } from "react";
 import { PencilFill, Trash } from "react-bootstrap-icons";
 import Accordion from "react-bootstrap/Accordion";
 import { useDrop } from "react-dnd";
-import { addTaskToSprint } from "../../../../idb/sprint";
-import { getAllSprintTasks } from "../../../../idb/task";
 import CustomToggle from "../customtoggle/customtoggle";
 import SprintTask, { SPRINT_TASK_TYPE } from "../sprinttask/sprinttask";
 import "./sprintcontainer.css";
+import { useUpdateTaskMutation } from "../../../../services/task";
 
-function SprintContainer({ index, sprint, onSprintEdit, onSprintDelete }) {
+function SprintContainer({
+  index,
+  sprint,
+  tasks,
+  onSprintEdit,
+  onSprintDelete,
+  setError,
+}) {
+  const [updateTask] = useUpdateTaskMutation();
   const [collectedProps, drop] = useDrop(() => ({
     accept: SPRINT_TASK_TYPE,
-    drop: (item) => dropTask(item),
-  }))
+    drop: (task) => dropTask(task),
+  }));
 
-  const [tasks, setTasks] = useState([]);
-
-  const dropTask = async (item) => {
-    const newTask = await addTaskToSprint(sprint, item.taskId);
-    console.log(newTask);
-    setTasks((prevTasks) => {
-      return prevTasks === null ? [ newTask ] : [ ...prevTasks, newTask ];
-    });
-
-    return item;
-  }
-
-  const onDragEnd = (item, monitor) => {
-    if (monitor.didDrop()) {
-      setTasks((prevTasks) => {
-        const index = prevTasks.findIndex((prevTask) => prevTask.id === item.taskId);
-        return [
-          ...prevTasks.slice(0, index),
-          ...prevTasks.slice(index + 1)
-        ]
-      });
-    }
-  }
-
-  useEffect(() => {
-    const updateData = async () => {
-      const sprintTasks = await getAllSprintTasks(sprint.id);
-      console.log({ sprintTasks });
-      setTasks(sprintTasks);
+  const dropTask = async (task) => {
+    console.log(task);
+    try {
+      await updateTask({
+        taskId: task.taskId,
+        task: { name: task.name, sprint: sprint._id },
+      }).unwrap();
+    } catch (error) {
+      setError({ isError: true, message: error?.data?.msg || error?.error });
     }
 
-    updateData();
-  }, []);
+    return task;
+  };
 
   const renderTasks = () => {
-    return tasks.map((task, i) => (
-      <SprintTask 
-        key={i}
-        task={task}
-        sprint={sprint}
-        onDragEnd={onDragEnd}
-      />
+    return tasks.map((task) => (
+      <SprintTask key={task._id} task={task} sprint={sprint} />
     ));
-  }
+  };
 
   return (
     <div className="sprint-container mt-3">
@@ -67,25 +48,41 @@ function SprintContainer({ index, sprint, onSprintEdit, onSprintDelete }) {
             <div className="d-flex align-items-center">
               <CustomToggle eventKey={index} />
               <h4 className="me-3">{sprint.name}</h4>
-              <span className="badge me-3">{tasks?.length || 0} тасков</span>
-              <span className="badge me-3">{sprint?.startdate}</span>
-              <span className="badge">{sprint?.enddate}</span>
+              <span className="badge me-3">{tasks?.length || 0} задач</span>
+              {sprint?.startDate && (
+                <span className="badge me-3">{sprint.startDate}</span>
+              )}
+              {sprint?.endDate && (
+                <span className="badge">{sprint.endDate}</span>
+              )}
             </div>
             <div>
-              <button onClick={() => onSprintEdit(sprint)} type="button" className="btn btn-dark p-1 me-2">
+              <button
+                onClick={() => onSprintEdit(sprint)}
+                type="button"
+                className="btn btn-dark p-1 me-2"
+              >
                 <PencilFill size={20} />
               </button>
-              <button onClick={() => onSprintDelete(sprint.id)} type="button" className="btn btn-danger p-1">
+              <button
+                onClick={() => onSprintDelete(sprint)}
+                type="button"
+                className="btn btn-danger p-1"
+              >
                 <Trash size={20} />
               </button>
             </div>
           </div>
           <Accordion.Collapse eventKey={index}>
             <div ref={drop} className="card-body">
-              {tasks 
-                ? renderTasks()
-                : <p className="lead">В спринте ещё нету тасков. Перенесите таск из бэклога что бы добавить</p>
-              }
+              {tasks.length > 0 ? (
+                renderTasks()
+              ) : (
+                <p className="lead">
+                  В спринте ещё нету задач. Перенесите задачу из бэклога что бы
+                  добавить
+                </p>
+              )}
             </div>
           </Accordion.Collapse>
         </div>

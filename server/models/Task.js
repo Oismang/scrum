@@ -1,5 +1,6 @@
 import Mongoose from "mongoose";
-import { SPRINT_MODEL_NAME, USER_MODEL_NAME } from "../constants/models.js";
+import { PROJECT_MODEL_NAME, SPRINT_MODEL_NAME, TASK_MODEL_NAME, USER_MODEL_NAME } from "../constants/models.js";
+import { Schema } from "mongoose";
 
 const TaskSchema = new Mongoose.Schema(
   {
@@ -13,10 +14,6 @@ const TaskSchema = new Mongoose.Schema(
     description: {
       type: String,
     },
-    sprint: {
-      type: Mongoose.Types.ObjectId,
-      ref: SPRINT_MODEL_NAME
-    },
     status: {
       type: String,
       enum: [ "TODO", "DOING", "DONE" ],
@@ -28,14 +25,23 @@ const TaskSchema = new Mongoose.Schema(
       max: 10,
       default: 1 
     },
+    sprint: {
+      type: Schema.Types.ObjectId,
+      ref: SPRINT_MODEL_NAME
+    },
+    project: {
+      type: Schema.Types.ObjectId,
+      ref: PROJECT_MODEL_NAME,
+      required: [true, "Please provide a project Id"]
+    },
     assigne: {
-      type: Mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: USER_MODEL_NAME
     },
     reporter: {
-      type: Mongoose.Types.ObjectId,
+      type: Schema.Types.ObjectId,
       ref: USER_MODEL_NAME,
-      required: true
+      required: [true, "Please provide a reporter Id"]
     }
   },
   { timestamps: true }

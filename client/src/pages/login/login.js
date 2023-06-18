@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Logo from "../../components/logo/logo";
 import "./login.css";
-import { USER_TOKEN_COOKIE, useLoginMutation } from "../../services/user";
+import { USER_TOKEN_COOKIE, useLoginMutation } from "../../services/auth";
 
 function Login() {
   const navigate = useNavigate();

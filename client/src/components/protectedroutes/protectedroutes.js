@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { Outlet, Navigate } from "react-router-dom";
 import { isTokenExpired } from "../../utils/functions";
-import { USER_TOKEN_COOKIE } from "../../services/user";
+import { USER_TOKEN_COOKIE } from "../../services/auth";
 
 export const ProtectedRoutes = () => {
   const token = Cookies.get(USER_TOKEN_COOKIE);

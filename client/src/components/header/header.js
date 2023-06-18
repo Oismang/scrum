@@ -5,7 +5,7 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import Navbar from "react-bootstrap/Navbar";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/logo/logo";
-import { USER_TOKEN_COOKIE } from "../../services/user";
+import { USER_TOKEN_COOKIE } from "../../services/auth";
 
 function Header({ user }) {
   const navigate = useNavigate();

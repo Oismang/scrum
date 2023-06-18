@@ -1,105 +1,97 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useParams } from "react-router-dom";
 import NoDataText from "../../../components/nodatatext/nodatatext";
-import { findProjectById } from "../../../idb/project";
-import { addSprint, deleteSprint, editSprint, getAllProjectsSprints } from "../../../idb/sprint";
-import "./sprint.css";
-import SprintModal from "./sprintmodal/sprintmodal";
+import {
+  useCreateProjectSprintMutation,
+  useDeleteSprintMutation,
+  useUpdateSprintMutation
+} from "../../../services/sprint";
 import BacklogContainer from "./backlogcontainer/backlogcontainer";
+import "./sprint.css";
 import SprintContainer from "./sprintcontainer/sprintcontainer";
+import SprintModal from "./sprintmodal/sprintmodal";
 
 const initialSprintValues = {
   name: "",
-  startdate: "",
-  enddate: "",
-  tasks: []
-}
+  startDate: "",
+  endDate: "",
+};
 
-function Sprint({ setError }) {
-  const { projectID } = useParams();
-  const [sprints, setSprints] = useState(null);
-  const [project, setProject] = useState(null);
+function Sprint({ setError, sprints, tasks, isTasksLoading }) {
+  const { projectId } = useParams();
+  const [createProjectSprint] = useCreateProjectSprintMutation();
+  const [updateSprint] = useUpdateSprintMutation();
+  const [deleteSprint] = useDeleteSprintMutation();
 
   const [showSprintModal, setShowSprintModal] = useState(false);
   const [isAddSprint, setIsAddSprint] = useState(false);
   const [sprintValues, setSprintValues] = useState(initialSprintValues);
-  const [isSprintError, setIsSprintError] = useState(false);
-
-  const updateData = async () => {
-    try {
-      const projectObj = await findProjectById(+projectID);
-      const sprintsObj = await getAllProjectsSprints(projectObj);
-      setProject(projectObj);
-      setSprints(sprintsObj);
-    } catch (error) {
-      console.log("updateData ERROR SPRINT", error);
-      setError({ isError: true, message: error.message });
-    }
-  };
-
-  useEffect(() => {
-    updateData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  const [isSprintModalError, setIsSprintModalError] = useState(false);
 
   const handleSprintInputChange = (event) => {
     setSprintValues({
       ...sprintValues,
       [event.target.name]: event.target.value,
     });
-  }
+  };
 
   const addNewSprint = () => {
     setIsAddSprint(true);
     setSprintValues(initialSprintValues);
     setShowSprintModal(true);
-  }
+  };
 
   const onSprintEdit = (sprint) => {
     setIsAddSprint(false);
-    setSprintValues({ ...sprint })
+    setSprintValues({ ...sprint });
     setShowSprintModal(true);
-  }
+  };
 
-  const onSprintDelete = async (id) => {
+  const onSprintDelete = async (sprint) => {
     try {
-      await deleteSprint(id, project);
-      updateData();
+      await deleteSprint(sprint._id).unwrap();
     } catch (error) {
-      setError({ isError: true, message: error.message });
+      setError({ isError: true, message: error?.data?.msg || error?.error });
     }
-  }
+  };
 
   const onSprintSubmit = async (event) => {
     event.preventDefault();
-    if (new Date(sprintValues.startdate).getTime() >= new Date(sprintValues.enddate).getTime()) {
-      return setIsSprintError(true);
+    if (
+      new Date(sprintValues.startdate).getTime() >=
+      new Date(sprintValues.enddate).getTime()
+    ) {
+      return setIsSprintModalError(true);
     }
 
     try {
       if (isAddSprint) {
-        await addSprint({ ...sprintValues }, project);
+        await createProjectSprint({ projectId, sprint: sprintValues }).unwrap();
       } else {
-        await editSprint(sprintValues);
+        await updateSprint({
+          sprintId: sprintValues._id,
+          sprint: sprintValues,
+        }).unwrap();
       }
-
-      updateData();
     } catch (error) {
-      setError({ isError: true, message: error.message });
+      setError({ isError: true, message: error?.data?.msg || error?.error });
     } finally {
       setShowSprintModal(false);
-      setIsSprintError(false);
+      setIsSprintModalError(false);
     }
-  }
+  };
 
   return (
     <div className="sprint-container p-3">
-      <NoDataText 
+      <NoDataText
         dataToCheck={sprints}
         onAddFuction={addNewSprint}
-        text={"спринтов"} 
+        text={"спринтов"}
       />
+
       <SprintModal
-        isSprintError={isSprintError}
+        isAddSprint={isAddSprint}
+        isSprintError={isSprintModalError}
         handleInputChange={handleSprintInputChange}
         onSubmit={onSprintSubmit}
         showModal={showSprintModal}
@@ -107,18 +99,27 @@ function Sprint({ setError }) {
         values={sprintValues}
       />
 
-      {project && <BacklogContainer
-        project={project}
-      />} 
+      {tasks && (
+        <BacklogContainer
+          tasks={tasks.filter((task) => !task.sprint)}
+          setError={setError}
+        />
+      )}
 
-      {sprints && sprints.map((sprint, i) => {
-        return <SprintContainer
-          key={i}
-          sprint={sprint}
-          onSprintEdit={onSprintEdit}
-          onSprintDelete={onSprintDelete}
-        />;
-      })}
+      {sprints &&
+        !isTasksLoading &&
+        sprints.map((sprint) => {
+          return (
+            <SprintContainer
+              key={sprint._id}
+              sprint={sprint}
+              tasks={tasks.filter((task) => task?.sprint?._id === sprint._id)}
+              onSprintEdit={onSprintEdit}
+              onSprintDelete={onSprintDelete}
+              setError={setError}
+            />
+          );
+        })}
     </div>
   );
 }

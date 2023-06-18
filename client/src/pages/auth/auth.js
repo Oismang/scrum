@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "../../components/logo/logo";
-import { useRegisterMutation } from "../../services/user";
+import { useRegisterMutation } from "../../services/auth";
 import "./auth.css";
 
 function Auth() {

@@ -1,34 +1,12 @@
-import Cookies from "js-cookie";
 import { api } from "./api";
-
-export const USER_TOKEN_COOKIE = "user_token";
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({
-    register: build.mutation({
-      query: (credentials) => ({
-        url: "/auth/register",
-        method: "POST",
-        body: credentials,
-      }),
-      transformResponse: (response, meta, arg) => {
-        Cookies.set(USER_TOKEN_COOKIE, response?.token);
-        return response;
-      },
-    }),
-
-    login: build.mutation({
-      query: (credentials) => ({
-        url: "/auth/login",
-        method: "POST",
-        body: credentials,
-      }),
-      transformResponse: (response, meta, arg) => {
-        Cookies.set(USER_TOKEN_COOKIE, response?.token);
-        return response;
-      },
+    getAllUsers: build.query({
+      query: () => ({ url: "user" }),
+      transformResponse: (response, meta, arg) => response.users,
     }),
   }),
 });
 
-export const { useRegisterMutation, useLoginMutation } = userApi;
+export const { useGetAllUsersQuery } = userApi;

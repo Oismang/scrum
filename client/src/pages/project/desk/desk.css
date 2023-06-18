@@ -1,0 +1,28 @@
+.desk-container > .container > .row:first-child {
+  border-bottom: 2px dashed var(--secondary);
+}
+
+.desk-container > .container > .row > .col {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.desk-container .container .row .col:not(:last-child) {
+  border-right: 2px solid var(--secondary);
+}
+
+.desk-container .card {
+  background-color: white;
+  border: 1px solid var(--secondary);
+}
+
+.desk-container .card .card-header {
+  background-color: var(--secondary);
+  color: white;
+  cursor: move;
+}
+
+.desk-container .card .card-body .row {
+  align-items: center;
+}
