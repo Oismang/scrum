@@ -11,16 +11,10 @@ function Home() {
         </div>
       </div>
 
-      <div className="row">
-        <div className="col p-2">
-          <h1 className="display-1">Scrum Helper</h1>
-        </div>
-      </div>
-
       <div className="row justify-content-center">
         <div className="col-8 col-sm-10 p-2">
           <p className="lead text-wrap fs-3 p-2">
-            Scrum — это методика гибкого управления проектами, помогающая
+            Scrum — это методика управления проектами, помогающая
             командам структурировать работу и управлять ею на основе набора
             ценностей, принципов и практик.
           </p>
