@@ -17,7 +17,7 @@ const initialSprintValues = {
   endDate: "",
 };
 
-function Sprint({ setError, sprints, tasks, isTasksLoading }) {
+function Sprint({ setError, sprints, tasks, isTasksLoading, user }) {
   const { projectId } = useParams();
   const [createProjectSprint] = useCreateProjectSprintMutation();
   const [updateSprint] = useUpdateSprintMutation();
@@ -58,8 +58,8 @@ function Sprint({ setError, sprints, tasks, isTasksLoading }) {
   const onSprintSubmit = async (event) => {
     event.preventDefault();
     if (
-      new Date(sprintValues.startdate).getTime() >=
-      new Date(sprintValues.enddate).getTime()
+      new Date(sprintValues.startDate).getTime() >=
+      new Date(sprintValues.endDate).getTime()
     ) {
       return setIsSprintModalError(true);
     }
@@ -87,6 +87,7 @@ function Sprint({ setError, sprints, tasks, isTasksLoading }) {
         dataToCheck={sprints}
         onAddFuction={addNewSprint}
         text={"спринтов"}
+        user={user}
       />
 
       <SprintModal
@@ -117,6 +118,7 @@ function Sprint({ setError, sprints, tasks, isTasksLoading }) {
               onSprintEdit={onSprintEdit}
               onSprintDelete={onSprintDelete}
               setError={setError}
+              user={user}
             />
           );
         })}

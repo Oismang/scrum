@@ -1,13 +1,18 @@
-import { PencilFill, Trash } from "react-bootstrap-icons";
-import "./task.css";
+import Cookies from "js-cookie";
 import Avatar from "react-avatar";
+import { PencilFill, Trash } from "react-bootstrap-icons";
+import { USER_ROLES, USER_TOKEN_COOKIE } from "../../services/auth";
+import { parseJwtToken } from "../../utils/functions";
+import "./task.css";
 
 function Task({ task, onEdit, onDelete, isDesk }) {
+  const user = parseJwtToken(Cookies.get(USER_TOKEN_COOKIE));
+
   return (
     <div className="card">
       <div className="card-header d-flex justify-content-between">
         <h4>{task.name}</h4>
-        {!isDesk && (
+        {(!isDesk && user?.role === USER_ROLES.ADMIN) && (
           <div>
             <button
               onClick={() => onEdit(task)}

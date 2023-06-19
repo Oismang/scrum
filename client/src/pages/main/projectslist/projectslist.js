@@ -5,8 +5,16 @@ import { useDeleteProjectMutation } from "../../../services/project";
 import { useGetAllProjectTasksQuery } from "../../../services/task";
 import { useGetAllProjectSprintsQuery } from "../../../services/sprint";
 import { useEffect } from "react";
+import { USER_ROLES } from "../../../services/auth";
 
-function ProjectsList({ setShowModal, setValues, projects, setError, setIsAdd }) {
+function ProjectsList({
+  setShowModal,
+  setValues,
+  projects,
+  setError,
+  setIsAdd,
+  user,
+}) {
   const [deleteProject] = useDeleteProjectMutation();
 
   const onEdit = (project) => {
@@ -33,13 +41,14 @@ function ProjectsList({ setShowModal, setValues, projects, setError, setIsAdd })
             onEdit={onEdit}
             onDelete={onDelete}
             setError={setError}
+            user={user}
           />
         ))}
     </div>
   );
 }
 
-function ProjectItem({ project, onEdit, onDelete, setError }) {
+function ProjectItem({ project, onEdit, onDelete, setError, user }) {
   const {
     data: tasks,
     isError: isTaskError,
@@ -52,17 +61,19 @@ function ProjectItem({ project, onEdit, onDelete, setError }) {
   } = useGetAllProjectSprintsQuery(project._id);
 
   useEffect(() => {
-    isTaskError && setError({
-      isError: isTaskError,
-      message: taskError?.data?.msg || taskError?.error
-    });
+    isTaskError &&
+      setError({
+        isError: isTaskError,
+        message: taskError?.data?.msg || taskError?.error,
+      });
   }, [isTaskError]);
-  
+
   useEffect(() => {
-    isSprintError && setError({
-      isError: isSprintError,
-      message: sprintError?.data?.msg || sprintError?.error
-    });
+    isSprintError &&
+      setError({
+        isError: isSprintError,
+        message: sprintError?.data?.msg || sprintError?.error,
+      });
   }, [isSprintError]);
 
   return (
@@ -92,24 +103,28 @@ function ProjectItem({ project, onEdit, onDelete, setError }) {
           )}
         </div>
       </div>
-      <div className="col-auto ms-auto">
-        <button
-          onClick={() => onEdit(project)}
-          type="button"
-          className="btn btn-outline-dark p-1"
-        >
-          <PencilFill size={20} />
-        </button>
-      </div>
-      <div className="col-auto">
-        <button
-          onClick={() => onDelete(project._id)}
-          type="button"
-          className="btn btn-outline-danger p-1"
-        >
-          <Trash size={20} />
-        </button>
-      </div>
+      {user?.role === USER_ROLES.ADMIN && (
+        <>
+          <div className="col-auto ms-auto">
+            <button
+              onClick={() => onEdit(project)}
+              type="button"
+              className="btn btn-outline-dark p-1"
+            >
+              <PencilFill size={20} />
+            </button>
+          </div>
+          <div className="col-auto">
+            <button
+              onClick={() => onDelete(project._id)}
+              type="button"
+              className="btn btn-outline-danger p-1"
+            >
+              <Trash size={20} />
+            </button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

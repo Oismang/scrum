@@ -10,9 +10,13 @@ import { useGetAllProjectSprintsQuery } from "../../services/sprint";
 import { useGetAllProjectTasksQuery } from "../../services/task";
 import { useParams } from "react-router-dom";
 import { useGetAllUsersQuery } from "../../services/user";
+import { parseJwtToken } from "../../utils/functions";
+import Cookies from "js-cookie";
+import { USER_TOKEN_COOKIE } from "../../services/auth";
 
 function Project() {
   const { projectId } = useParams();
+  const user = parseJwtToken(Cookies.get(USER_TOKEN_COOKIE));
   const {
     data: sprints,
     isError: isSprintError,
@@ -54,7 +58,12 @@ function Project() {
     <div className="project-container">
       <Tabs defaultActiveKey="backlog" className="mb-3" justify>
         <Tab eventKey="backlog" title="Бэклог">
-          <Backlog setError={setError} users={users} tasks={tasks} />
+          <Backlog
+            setError={setError}
+            users={users}
+            tasks={tasks}
+            user={user}
+          />
         </Tab>
         <Tab eventKey="sprints" title="Спринты">
           <Sprint
@@ -62,6 +71,7 @@ function Project() {
             sprints={sprints}
             tasks={tasks}
             isTasksLoading={isTasksLoading}
+            user={user}
           />
         </Tab>
         <Tab eventKey="scrum-desk" title="Скрам доска">

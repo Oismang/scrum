@@ -18,7 +18,7 @@ const initialValues = {
   assigne: undefined,
 };
 
-function Backlog({ setError, tasks, users }) {
+function Backlog({ setError, tasks, users, user }) {
   const { projectId } = useParams();
   const [createProjectTask] = useCreateProjectTaskMutation();
   const [updateTask] = useUpdateTaskMutation();
@@ -96,6 +96,7 @@ function Backlog({ setError, tasks, users }) {
         dataToCheck={tasks}
         onAddFuction={addNewTask}
         text={"задач"}
+        user={user}
       />
       {renderTasks()}
       <TaskModal

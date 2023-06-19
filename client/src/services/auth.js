@@ -2,6 +2,10 @@ import Cookies from "js-cookie";
 import { api } from "./api";
 
 export const USER_TOKEN_COOKIE = "user_token";
+export const USER_ROLES = {
+  USER: "user",
+  ADMIN: "admin"
+}
 
 export const userApi = api.injectEndpoints({
   endpoints: (build) => ({

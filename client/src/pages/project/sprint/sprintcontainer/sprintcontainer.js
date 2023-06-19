@@ -5,6 +5,7 @@ import CustomToggle from "../customtoggle/customtoggle";
 import SprintTask, { SPRINT_TASK_TYPE } from "../sprinttask/sprinttask";
 import "./sprintcontainer.css";
 import { useUpdateTaskMutation } from "../../../../services/task";
+import { USER_ROLES } from "../../../../services/auth";
 
 function SprintContainer({
   index,
@@ -13,6 +14,7 @@ function SprintContainer({
   onSprintEdit,
   onSprintDelete,
   setError,
+  user,
 }) {
   const [updateTask] = useUpdateTaskMutation();
   const [collectedProps, drop] = useDrop(() => ({
@@ -56,22 +58,24 @@ function SprintContainer({
                 <span className="badge">{sprint.endDate}</span>
               )}
             </div>
-            <div>
-              <button
-                onClick={() => onSprintEdit(sprint)}
-                type="button"
-                className="btn btn-dark p-1 me-2"
-              >
-                <PencilFill size={20} />
-              </button>
-              <button
-                onClick={() => onSprintDelete(sprint)}
-                type="button"
-                className="btn btn-danger p-1"
-              >
-                <Trash size={20} />
-              </button>
-            </div>
+            {user?.role === USER_ROLES.ADMIN && (
+              <div>
+                <button
+                  onClick={() => onSprintEdit(sprint)}
+                  type="button"
+                  className="btn btn-dark p-1 me-2"
+                >
+                  <PencilFill size={20} />
+                </button>
+                <button
+                  onClick={() => onSprintDelete(sprint)}
+                  type="button"
+                  className="btn btn-danger p-1"
+                >
+                  <Trash size={20} />
+                </button>
+              </div>
+            )}
           </div>
           <Accordion.Collapse eventKey={index}>
             <div ref={drop} className="card-body">

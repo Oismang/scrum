@@ -75,11 +75,12 @@ function Main() {
   const renderContet = () => {
     return (
       <div className="app-container">
-        <h1 className="display-3 text-center">Мои проекты</h1>
+        <h1 className="display-3 text-center">Проекты</h1>
         <NoDataText
           dataToCheck={projects}
           onAddFuction={onAddNewProject}
           text={"проектов"}
+          user={user}
         />
         <ProjectModal
           isAdd={isAdd}
@@ -95,6 +96,7 @@ function Main() {
           setShowModal={setShowModal}
           setValues={setValues}
           setIsAdd={setIsAdd}
+          user={user}
         />
       </div>
     );
