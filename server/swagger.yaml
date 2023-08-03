@@ -1,0 +1,498 @@
+openapi: 3.0.0
+info:
+  title: Scrum API
+  contact: {}
+  version: "1.0"
+servers:
+  - url: https://scrum-api-tfe5.onrender.com/api/v1
+    variables: {}
+paths:
+  /auth/register:
+    post:
+      tags:
+        - Auth
+      summary: Register User
+      operationId: RegisterUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/RegisterUserRequest"
+                - example:
+                    name: anna
+                    email: anna@gmail.com
+                    password: secret
+            example:
+              name: anna
+              email: anna@gmail.com
+              password: secret
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /auth/login:
+    post:
+      tags:
+        - Auth
+      summary: Login User
+      operationId: LoginUser
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/LoginUserRequest"
+                - example:
+                    email: admin@gmail.com
+                    password: admin1
+            example:
+              email: admin@gmail.com
+              password: admin1
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /project:
+    post:
+      tags:
+        - Project
+      summary: Create Project
+      operationId: CreateProject
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateProjectRequest"
+                - example:
+                    name: project 1
+            example:
+              name: project 1
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+    get:
+      tags:
+        - Project
+      summary: Get All Projects
+      operationId: GetAllProjects
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+  /project/{projectId}:
+    parameters:
+      - in: path
+        name: projectId
+        schema:
+          type: string
+        required: true
+        description: The project ID
+    patch:
+      tags:
+        - Project
+      summary: Update Project
+      operationId: UpdateProject
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateProjectRequest"
+                - example:
+                    name: Первый
+            example:
+              name: Первый
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+    delete:
+      tags:
+        - Project
+      summary: Delete Project
+      operationId: DeleteProject
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /task:
+    get:
+      tags:
+        - Task
+      summary: Get All Tasks
+      operationId: GetAllTasks
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /project/{projectId}/task:
+    parameters:
+      - in: path
+        name: projectId
+        schema:
+          type: string
+        required: true
+        description: The project ID
+    post:
+      tags:
+        - Task
+      summary: Create Project Task
+      operationId: CreateProjectTask
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateProjectTaskRequest"
+                - example:
+                    name: П1231231
+                    description: ВИЛКОЙ БЛЯТЬ
+            example:
+              name: П1231231
+              description: ВИЛКОЙ БЛЯТЬ
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /task/{taskId}:
+    parameters:
+      - in: path
+        name: taskId
+        schema:
+          type: string
+        required: true
+        description: The task ID
+    patch:
+      tags:
+        - Task
+      summary: Update Task
+      operationId: UpdateTask
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/UpdateTaskRequest"
+                - example:
+                    name: "213123"
+                    description: я пердоле
+            example:
+              name: "213123"
+              description: я пердоле
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+    delete:
+      tags:
+        - Task
+      summary: Delete Task
+      operationId: DeleteTask
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /project/{projectId}/sprint:
+    parameters:
+      - in: path
+        name: projectId
+        schema:
+          type: string
+        required: true
+        description: The project ID
+    get:
+      tags:
+        - Sprint
+      summary: Get All Project Sprints
+      operationId: GetAllProjectSprints
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+    post:
+      tags:
+        - Sprint
+      summary: Create Project Sprint
+      operationId: CreateProjectSprint
+      parameters: []
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: "#/components/schemas/CreateProjectSprintRequest"
+                - example:
+                    name: sprint 1
+                    startDate: 01.01.2020
+                    endDate: 09.01.2020
+            example:
+              name: sprint 1
+              startDate: 01.01.2020
+              endDate: 09.01.2020
+        required: true
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /sprint/{sprintId}:
+    parameters:
+      - in: path
+        name: sprintId
+        schema:
+          type: string
+        required: true
+        description: The sprint ID
+    patch:
+      tags:
+        - Sprint
+      summary: Update Sprint
+      operationId: UpdateSprint
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+    delete:
+      tags:
+        - Sprint
+      summary: Delete Sprint
+      operationId: DeleteSprint
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+  /user:
+    get:
+      tags:
+        - User
+      summary: Get All Users
+      operationId: GetAllUsers
+      parameters: []
+      responses:
+        "200":
+          description: ""
+          headers: {}
+      deprecated: false
+      security:
+        - bearer: []
+      servers:
+        - url: https://scrum-api-tfe5.onrender.com/api/v1
+          variables: {}
+components:
+  schemas:
+    RegisterUserRequest:
+      title: RegisterUserRequest
+      required:
+        - name
+        - email
+        - password
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        name: anna
+        email: anna@gmail.com
+        password: secret
+    LoginUserRequest:
+      title: LoginUserRequest
+      required:
+        - email
+        - password
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      example:
+        email: admin@gmail.com
+        password: admin1
+    CreateProjectRequest:
+      title: CreateProjectRequest
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: project 1
+    UpdateProjectRequest:
+      title: UpdateProjectRequest
+      required:
+        - name
+      type: object
+      properties:
+        name:
+          type: string
+      example:
+        name: Первый
+    CreateProjectTaskRequest:
+      title: CreateProjectTaskRequest
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        name: П1231231
+        description: ВИЛКОЙ БЛЯТЬ
+    UpdateTaskRequest:
+      title: UpdateTaskRequest
+      required:
+        - name
+        - description
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+      example:
+        name: "213123"
+        description: я пердоле
+    CreateProjectSprintRequest:
+      title: CreateProjectSprintRequest
+      required:
+        - name
+        - startDate
+        - endDate
+      type: object
+      properties:
+        name:
+          type: string
+        startDate:
+          type: string
+        endDate:
+          type: string
+      example:
+        name: sprint 1
+        startDate: 01.01.2020
+        endDate: 09.01.2020
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+security: []
+tags:
+  - name: Auth
+  - name: Project
+  - name: Task
+  - name: Sprint
+  - name: User

@@ -4,6 +4,8 @@ import express from "express";
 import { rateLimit } from "express-rate-limit";
 import helmet from "helmet";
 import xss from "xss-clean";
+import swaggerUI from "swagger-ui-express";
+import YAML from "yamljs";
 import { connectDB } from "./db/connect.js";
 import { errorHandlerMiddleware } from "./middleware/error-handler.js";
 import { notFoundMiddleware } from "./middleware/not-found.js";
@@ -20,6 +22,7 @@ dotenv.config();
 
 const port = process.env.PORT || 8080;
 const app = express();
+const swaggerDocument = YAML.load('./swagger.yaml');
 
 // APP SETTINGS
 app.set("trust proxy", 1);
@@ -36,9 +39,11 @@ app.use(xss());
 app.use(morgan("tiny"))
 
 // ROUTES
+
 app.get("/", (req, res) => {
-  res.send("<h1>SCRUM API</h1>");
+  res.send('<h1>Scrum API</h1><a href="/api-docs">Documentation</a>');
 });
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/user', authMiddleware, userRouter);
