@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:  
+  scrum-api:
+    build: ./server
+    container_name: scrum-api
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $NODE_LOCAL_PORT:$NODE_DOCKER_PORT
+    environment:
+      - CLIENT_ORIGIN=$CLIENT_ORIGIN
+
+  scrum-ui:
+    depends_on:
+      - scrum-api
+    build:
+      context: ./client
+      args:
+        - REACT_APP_API_BASE_URL=$CLIENT_API_BASE_URL
+    container_name: scrum-ui
+    ports:
+      - $REACT_LOCAL_PORT:$REACT_DOCKER_PORT
