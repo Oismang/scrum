@@ -9,7 +9,7 @@ export const apiTags = {
 }
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://localhost:8080/api/v1",
+  baseUrl: process.env.REACT_APP_API_BASE_URL || "http://localhost:8080/api/v1",
   prepareHeaders: (headers) => {
     const token = Cookies.get(USER_TOKEN_COOKIE);
 
